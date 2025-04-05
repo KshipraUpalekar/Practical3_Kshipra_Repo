@@ -1,0 +1,31 @@
+image: openjdk:11  # Docker image with Java 11 
+stages: 
+  -build 
+  -test 
+  -deploy 
+  
+build_job: 
+  stage: build 
+  script: 
+    -echo "Building the Java project" 
+    -javac Hello.java Compile Hello.java 
+  artifacts: 
+    paths: 
+      -"*.class" # Store compiled class files 
+      
+  test job: 
+    stage: test 
+    script: 
+      - echo "Running tests" 
+      - javac HelloTest.java # Compile the test file 
+      -java HelloTest # Run the test 
+    dependencies: 
+      -build_job #Use the compiled Hello.class
+  
+deploy_job: 
+  stage: deploy 
+  script: 
+    echo "Deploying the Java project (simulation)" 
+    - java Hello # Run the main class as a "deployment" simulation 
+  only: 
+  -master Or main, depending on your branch
